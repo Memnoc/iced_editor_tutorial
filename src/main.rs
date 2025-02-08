@@ -1,6 +1,6 @@
 use iced::{
     widget::{container, text_editor},
-    Element, Sandbox, Settings,
+    Element, Sandbox, Settings, Theme,
 };
 
 fn main() -> iced::Result {
@@ -40,5 +40,9 @@ impl Sandbox for Editor {
     fn view(&self) -> Element<'_, Message> {
         let input = text_editor(&self.content).on_edit(Message::Edit);
         container(input).padding(10).into()
+    }
+
+    fn theme(&self) -> Theme {
+        Theme::Dark
     }
 }
