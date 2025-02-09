@@ -1,6 +1,7 @@
 use iced::{
+    executor,
     widget::{column, container, horizontal_space, row, text, text_editor},
-    Element, Length, Sandbox, Settings, Theme,
+    Application, Command, Element, Length, Settings, Theme,
 };
 
 fn main() -> iced::Result {
@@ -16,25 +17,34 @@ enum Message {
     Edit(text_editor::Action),
 }
 
-impl Sandbox for Editor {
+impl Application for Editor {
     type Message = Message;
+    type Executor = executor::Default;
 
-    fn new() -> Self {
-        Self {
-            content: text_editor::Content::with(include_str!("main.rs")),
-        }
+    type Theme = Theme;
+
+    type Flags = ();
+
+    fn new(_flags: Self::Flags) -> (Self, Command<Message>) {
+        (
+            Self {
+                content: text_editor::Content::with(include_str!("main.rs")),
+            },
+            Command::none(),
+        )
     }
 
     fn title(&self) -> String {
         String::from("A cool editor!")
     }
 
-    fn update(&mut self, message: Message) {
+    fn update(&mut self, message: Message) -> Command<Message> {
         match message {
             Message::Edit(action) => {
                 self.content.edit(action);
             }
         }
+        Command::none()
     }
 
     fn view(&self) -> Element<Message> {
