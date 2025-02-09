@@ -1,5 +1,5 @@
 use iced::{
-    widget::{container, text_editor},
+    widget::{column, container, text, text_editor},
     Element, Sandbox, Settings, Theme,
 };
 
@@ -37,9 +37,15 @@ impl Sandbox for Editor {
         }
     }
 
-    fn view(&self) -> Element<'_, Message> {
+    fn view(&self) -> Element<Message> {
         let input = text_editor(&self.content).on_edit(Message::Edit);
-        container(input).padding(10).into()
+
+        let position = {
+            let (line, column) = self.content.cursor_position();
+            text(format!("{}:{}", line + 1, column + 1))
+        };
+
+        container(column![input, position]).padding(10).into()
     }
 
     fn theme(&self) -> Theme {
