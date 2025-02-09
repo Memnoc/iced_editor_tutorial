@@ -21,7 +21,7 @@ impl Sandbox for Editor {
 
     fn new() -> Self {
         Self {
-            content: text_editor::Content::new(),
+            content: text_editor::Content::with(include_str!("main.rs")),
         }
     }
 
